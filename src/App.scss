@@ -1,0 +1,8 @@
+@import 'styles/var.scss';
+@import 'styles/mixin.scss';
+
+.App {
+  color: $primary-color;
+  width: 100px;
+  @include ellipse;
+}

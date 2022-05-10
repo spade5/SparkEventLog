@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Core Dependencies
+* React 18
+* React Router 5
 ## Todo List
 * rtk
 * react-transition-group 

@@ -1,10 +1,11 @@
-export default {
+module.exports = {
+  parser: '@typescript-eslint/parser',
   env: {
     browser: true,
     es2021: true
   },
+  plugins: ['react', '@typescript-eslint'],
   extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -12,6 +13,7 @@ export default {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', '@typescript-eslint'],
-  rules: {}
+  rules: {
+    'react/react-in-jsx-scope': 'off'
+  }
 }
