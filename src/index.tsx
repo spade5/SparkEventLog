@@ -4,15 +4,24 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import { store } from './rtk/store'
+import zhCN from 'antd/lib/locale/zh_CN'
+import moment from 'moment'
+import { ConfigProvider } from 'antd'
+
+import 'moment/locale/zh-cn'
 import 'styles/cssVar.css'
 import './index.css'
+
+moment.locale('zh-cn')
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ConfigProvider locale={zhCN}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ConfigProvider>
   </React.StrictMode>
 )
 

@@ -1,8 +1,10 @@
+@import '~antd/dist/antd.css';
 @import 'styles/var.scss';
 @import 'styles/mixin.scss';
 
 .App {
   color: $primary-color;
-  width: 100px;
+  width: 100vw;
+  height: 100vh;
   @include ellipse;
 }
