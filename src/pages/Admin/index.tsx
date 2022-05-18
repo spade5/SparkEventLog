@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
+import Menu from 'components/Menu'
 
 import './index.scss'
 
@@ -10,7 +11,9 @@ const Admin = () => {
     <Layout className="admin-layout">
       <Sider theme="light" className="admin-sidebar">
         <Header className="admin-sidebar-logo">Logo</Header>
-        <Content className="admin-menu-container">Menu</Content>
+        <Content className="admin-menu-container">
+          <Menu />
+        </Content>
       </Sider>
       <Layout>
         <Header>header</Header>

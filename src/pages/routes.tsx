@@ -12,11 +12,13 @@ export interface RouteDataProps {
   routes?: RouteDataProps[]
   name?: string
   hideInMenu?: boolean
+  menuRoot?: boolean
 }
 
 const routes: RouteDataProps[] = [
   {
-    path: '/',
+    path: '/admin',
+    menuRoot: true,
     component: <Admin />, //一级路由，不作为菜单项
     routes: [
       {
@@ -30,9 +32,21 @@ const routes: RouteDataProps[] = [
         name: 'Demo1',
         routes: [
           {
-            path: 'demo2',
+            path: '/admin/demo1/demo1-1',
             component: <Demo2 />,
-            name: 'Demo2'
+            name: 'Demo1-1'
+          }
+        ]
+      },
+      {
+        path: 'demo2',
+        component: <Demo1 />,
+        name: 'Demo2',
+        routes: [
+          {
+            path: 'demo2-1',
+            component: <Demo2 />,
+            name: 'Demo2-1'
           }
         ]
       }
