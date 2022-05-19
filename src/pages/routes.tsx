@@ -3,34 +3,37 @@ import Admin from './Admin'
 import Demo1 from './Admin/Demo1'
 import Demo2 from './Admin/Demo1/Demo2'
 import Home from './Admin/Home'
+import { HomeOutlined, UserOutlined, OrderedListOutlined } from '@ant-design/icons'
 
 export interface RouteDataProps extends RouteObject {
+  icon?: React.ReactNode
   children?: RouteDataProps[]
   name?: string
   hideInMenu?: boolean
-  menuRoot?: boolean
 }
 
 const routes: RouteDataProps[] = [
   {
     path: '/admin',
-    menuRoot: true,
     element: <Admin />, //一级路由，不作为菜单项
     children: [
       {
         element: <Home />, //二级路由，作为菜单项
         index: true,
-        name: '首页'
+        name: '首页',
+        icon: <HomeOutlined />
       },
       {
         path: 'demo1',
+        icon: <UserOutlined />,
         element: <Demo1 />,
         name: 'Demo1',
         children: [
           {
             path: '/admin/demo1/demo1-1',
             element: <Demo2 />,
-            name: 'Demo1-1'
+            name: 'Demo1-1',
+            icon: <OrderedListOutlined />
           }
         ]
       },

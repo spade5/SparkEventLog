@@ -1,10 +1,10 @@
 import React from 'react'
 import Menu, { MenuProps } from 'antd/es/menu'
-import routes, { RouteDataProps } from 'pages/routes'
+import { RouteDataProps } from 'pages/routes'
 import { MenuInfo, SubMenuType } from 'rc-menu/lib/interface'
 import { Location, useLocation, useNavigate, matchRoutes } from 'react-router-dom'
-
 import { resolvePaths } from './helper'
+import { getAdminRoute } from 'pages/Admin'
 
 interface SideMenuProps {
   navigate: (url: string) => void
@@ -33,7 +33,6 @@ class SideMenu extends React.Component<SideMenuProps> {
   componentDidMount() {
     const matched = matchRoutes(this.routes, this.props.location)
     const keys = (matched || []).map((m) => m.route.path || '')
-    console.log('matched:', keys, Date.now())
     this.setState({
       openKeys: keys,
       selectedKeys: keys
@@ -42,7 +41,7 @@ class SideMenu extends React.Component<SideMenuProps> {
 
   routes: RouteDataProps[] = []
   init() {
-    const root = routes.find((r) => r.menuRoot)
+    const root = getAdminRoute()
     if (!root) return
     this.routes = [root]
     this.items = this.getMenuItems(root.children || [])
@@ -51,11 +50,12 @@ class SideMenu extends React.Component<SideMenuProps> {
 
   getMenuItems: (routes: RouteDataProps[]) => MenuItem[] = (routes) => {
     return routes.map((route: RouteDataProps) => {
-      const { path, children, name } = route
+      const { path, children, name, icon } = route
       const subMenu = (children && this.getMenuItems(children)) || null
       const item = {
         key: path || '',
         label: name,
+        icon,
         children: subMenu as MenuItem[],
         type: subMenu && subMenu.length > 0 ? 'subMenu' : 'menuItem'
       } as MenuItem
@@ -68,7 +68,6 @@ class SideMenu extends React.Component<SideMenuProps> {
 
   onClick = (item: MenuInfo) => {
     const { navigate } = this.props
-    console.log(item, resolvePaths([...item.keyPath, this.baseUrl]))
     navigate(resolvePaths([...item.keyPath, this.baseUrl]))
 
     //如果切换菜单，则需要更新展开的子菜单
@@ -86,7 +85,6 @@ class SideMenu extends React.Component<SideMenuProps> {
     })
   }
   onSubMenuClick: TitleClickFnType = (info) => {
-    console.log('open', info)
     this.setState({
       openKeys: [info.key]
     })
