@@ -6,24 +6,25 @@ import './App.scss'
 
 const mapRoutes = (routes: RouteDataProps[]) =>
   routes.map((route: RouteDataProps) => {
-    const { path, component, index, routes: children } = route
+    const { path, element, index, children } = route
     const subRoutes = (children && mapRoutes(children)) || null
     if (index) {
       const props: IndexRouteProps = {
         index,
-        element: component
+        element
       }
       return <Route key="index" {...props} />
     }
 
     return (
-      <Route path={path} key={path} element={component}>
+      <Route path={path} key={path} element={element}>
         {subRoutes}
       </Route>
     )
   })
 
 function App() {
+  console.log('App')
   return (
     <div className="App">
       <HashRouter>
