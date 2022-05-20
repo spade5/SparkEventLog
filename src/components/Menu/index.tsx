@@ -1,57 +1,50 @@
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import Menu, { MenuProps } from 'antd/es/menu'
 import { RouteDataProps } from 'pages/routes'
 import { MenuInfo, SubMenuType } from 'rc-menu/lib/interface'
-import { Location, useLocation, useNavigate, matchRoutes } from 'react-router-dom'
+import { useLocation, useNavigate, matchRoutes } from 'react-router-dom'
 import { resolvePaths } from './helper'
 import { getAdminRoute } from 'pages/Admin'
-
-interface SideMenuProps {
-  navigate: (url: string) => void
-  location: Location
-}
 
 type TitleClickFnType = Required<SubMenuType>['onTitleClick']
 type MenuItem = Required<MenuProps>['items'][number]
 
-class SideMenu extends React.Component<SideMenuProps> {
-  items: MenuItem[] = []
-  baseUrl = '/'
-  state: {
-    openKeys: string[]
-    selectedKeys: string[]
-  } = {
-    openKeys: [],
-    selectedKeys: []
-  }
+const SiderMenu: React.FC = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  constructor(props: SideMenuProps) {
-    super(props)
-    this.init()
-  }
+  const [openKeys, setOpenKeys] = React.useState<string[]>([])
+  const [selectedKeys, setSelectedKeys] = React.useState<string[]>([])
+  const [items, setItems] = React.useState<MenuItem[]>([])
 
-  componentDidMount() {
-    const matched = matchRoutes(this.routes, this.props.location)
-    const keys = (matched || []).map((m) => m.route.path || '')
-    this.setState({
-      openKeys: keys,
-      selectedKeys: keys
+  const adminRoute = useMemo(() => {
+    return getAdminRoute()
+  }, [])
+
+  const baseUrl = useMemo<string>(() => {
+    return adminRoute?.path || '/'
+  }, [adminRoute])
+
+  const onSubMenuClick: TitleClickFnType = useCallback((info) => {
+    setOpenKeys((openKeys) => {
+      let _openKeys = [...openKeys]
+      const { key } = info
+      const index = openKeys.indexOf(key)
+      if (index === -1) {
+        // _openKeys.push(key)  支持打开多个菜单
+        _openKeys = [key]
+      } else {
+        _openKeys = []
+        // _openKeys.splice(index, 1)   支持关闭多个菜单
+      }
+      return _openKeys
     })
-  }
+  }, [])
 
-  routes: RouteDataProps[] = []
-  init() {
-    const root = getAdminRoute()
-    if (!root) return
-    this.routes = [root]
-    this.items = this.getMenuItems(root.children || [])
-    this.baseUrl = root.path || '/'
-  }
-
-  getMenuItems: (routes: RouteDataProps[]) => MenuItem[] = (routes) => {
+  const getMenuItems: (routes: RouteDataProps[]) => MenuItem[] = useCallback((routes) => {
     return routes.map((route: RouteDataProps) => {
       const { path, children, name, icon } = route
-      const subMenu = (children && this.getMenuItems(children)) || null
+      const subMenu = (children && getMenuItems(children)) || null
       const item = {
         key: path || '',
         label: name,
@@ -60,50 +53,39 @@ class SideMenu extends React.Component<SideMenuProps> {
         type: subMenu && subMenu.length > 0 ? 'subMenu' : 'menuItem'
       } as MenuItem
       if (subMenu) {
-        ;(item as SubMenuType).onTitleClick = this.onSubMenuClick
+        ;(item as SubMenuType).onTitleClick = onSubMenuClick
       }
       return item
     })
-  }
+  }, [])
 
-  onClick = (item: MenuInfo) => {
-    const { navigate } = this.props
-    navigate(resolvePaths([...item.keyPath, this.baseUrl]))
+  const onClick = useCallback((item: MenuInfo) => {
+    navigate(resolvePaths([...item.keyPath, baseUrl]))
 
     //如果切换菜单，则需要更新展开的子菜单
     const _openKeys: string[] = []
-    const { openKeys } = this.state
     ;(openKeys || []).forEach((key) => {
       if (item.keyPath.includes(key)) {
         _openKeys.push(key)
       }
     })
 
-    this.setState({
-      selectedKeys: item.keyPath,
-      openKeys: _openKeys
-    })
-  }
-  onSubMenuClick: TitleClickFnType = (info) => {
-    this.setState({
-      openKeys: [info.key]
-    })
-  }
-  render() {
-    const { openKeys, selectedKeys } = this.state
-    return <Menu openKeys={openKeys} selectedKeys={selectedKeys} mode="inline" onClick={this.onClick} items={this.items} />
-  }
+    setOpenKeys(_openKeys)
+    setSelectedKeys(item.keyPath)
+  }, [])
+
+  useEffect(() => {
+    setItems(getMenuItems(adminRoute?.children || []))
+  })
+
+  useEffect(() => {
+    const matched = matchRoutes(adminRoute ? [adminRoute] : [], location)
+    const keys = (matched || []).map((m) => m.route.path || '')
+    setOpenKeys(keys)
+    setSelectedKeys(keys)
+  }, [location])
+
+  return <Menu openKeys={openKeys} selectedKeys={selectedKeys} mode="inline" onClick={onClick} items={items} />
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const withNavigate = (Component: React.ComponentType<any>) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const render = (props: any) => {
-    const navigate = useNavigate()
-    const location = useLocation()
-    return <Component {...props} navigate={navigate} location={location} />
-  }
-  return render
-}
-
-export default withNavigate(SideMenu)
+export default SiderMenu
