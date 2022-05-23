@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
 import Menu from 'components/Menu'
-import routes, { RouteDataProps } from '../routes'
+import routes, { AdminPathName, RouteDataProps } from '../routes'
 import Header from 'components/Header'
 
 import './index.scss'
 
 const { Sider, Content } = Layout
 
-export const getAdminRoute: () => RouteDataProps | undefined = () => routes.find((route: RouteDataProps) => route.path === '/admin')
+export const getAdminRoute: () => RouteDataProps | undefined = () => routes.find((route: RouteDataProps) => route.path === AdminPathName)
 
 const Admin = () => {
   return (

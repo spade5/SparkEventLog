@@ -12,9 +12,11 @@ export interface RouteDataProps extends RouteObject {
   hideInMenu?: boolean
 }
 
+export const AdminPathName = '/admin'
+
 const routes: RouteDataProps[] = [
   {
-    path: '/admin',
+    path: AdminPathName,
     element: <Admin />, //一级路由，不作为菜单项
     children: [
       {
@@ -48,12 +50,18 @@ const routes: RouteDataProps[] = [
             name: 'Demo2-1'
           }
         ]
+      },
+      {
+        path: '*',
+        name: '404 Not Found',
+        element: 'Not Found...',
+        hideInMenu: true
       }
     ]
   },
   {
     path: '/',
-    element: <Navigate to="/admin" />
+    element: <Navigate to={AdminPathName} />
   }
 ]
 

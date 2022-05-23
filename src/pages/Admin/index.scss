@@ -4,6 +4,7 @@
   height: 100%;
   width: 100%;
   .admin-sidebar {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.05);
     .admin-sidebar-logo {
       background-color: $content-background-color;
     }
@@ -11,6 +12,8 @@
 
   .admin-header {
     background-color: #fff;
+    position: relative;
+    z-index: 1;
   }
 
   .admin-content {

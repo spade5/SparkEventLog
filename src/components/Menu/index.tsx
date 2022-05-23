@@ -42,21 +42,23 @@ const SiderMenu: React.FC = () => {
   }, [])
 
   const getMenuItems: (routes: RouteDataProps[]) => MenuItem[] = useCallback((routes) => {
-    return routes.map((route: RouteDataProps) => {
-      const { path, children, name, icon } = route
-      const subMenu = (children && getMenuItems(children)) || null
-      const item = {
-        key: path || '',
-        label: name,
-        icon,
-        children: subMenu as MenuItem[],
-        type: subMenu && subMenu.length > 0 ? 'subMenu' : 'menuItem'
-      } as MenuItem
-      if (subMenu) {
-        ;(item as SubMenuType).onTitleClick = onSubMenuClick
-      }
-      return item
-    })
+    return routes
+      .filter((r) => !r.hideInMenu)
+      .map((route: RouteDataProps) => {
+        const { path, children, name, icon } = route
+        const subMenu = (children && getMenuItems(children)) || null
+        const item = {
+          key: path || '',
+          label: name,
+          icon,
+          children: subMenu as MenuItem[],
+          type: subMenu && subMenu.length > 0 ? 'subMenu' : 'menuItem'
+        } as MenuItem
+        if (subMenu) {
+          ;(item as SubMenuType).onTitleClick = onSubMenuClick
+        }
+        return item
+      })
   }, [])
 
   const onClick = useCallback((item: MenuInfo) => {
