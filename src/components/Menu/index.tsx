@@ -76,7 +76,7 @@ const SiderMenu: React.FC = () => {
 
   useEffect(() => {
     setItems(getMenuItems(adminRoute?.children || []))
-  })
+  }, [])
 
   useEffect(() => {
     const matched = matchRoutes(adminRoute ? [adminRoute] : [], location)

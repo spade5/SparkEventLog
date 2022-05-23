@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom'
+import { Navigate, RouteObject } from 'react-router-dom'
 import Admin from './Admin'
 import Demo1 from './Admin/Demo1'
 import Demo2 from './Admin/Demo1/Demo2'
@@ -50,6 +50,10 @@ const routes: RouteDataProps[] = [
         ]
       }
     ]
+  },
+  {
+    path: '/',
+    element: <Navigate to="/admin" />
   }
 ]
 

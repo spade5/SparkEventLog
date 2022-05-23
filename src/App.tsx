@@ -5,7 +5,7 @@ import routes, { RouteDataProps } from 'pages/routes'
 import './App.scss'
 
 const mapRoutes = (routes: RouteDataProps[]) =>
-  routes.map((route: RouteDataProps) => {
+  routes.map((route: RouteDataProps, i: number) => {
     const { path, element, index, children } = route
     const subRoutes = (children && mapRoutes(children)) || null
     if (index) {
@@ -13,7 +13,7 @@ const mapRoutes = (routes: RouteDataProps[]) =>
         index,
         element
       }
-      return <Route key="index" {...props} />
+      return <Route key={path || i} {...props} />
     }
 
     return (

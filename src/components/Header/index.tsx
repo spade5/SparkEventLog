@@ -3,7 +3,6 @@ import React from 'react'
 import { getAdminRoute } from 'pages/Admin'
 import { matchRoutes, useLocation } from 'react-router-dom'
 import { RouteDataProps } from 'pages/routes'
-
 import './index.scss'
 
 const HeaderBreadcrumb: React.FC = () => {
@@ -13,11 +12,11 @@ const HeaderBreadcrumb: React.FC = () => {
   const matched = (matchRoutes([route], location) || []).filter((m) => (m.route as RouteDataProps).name)
   return (
     <Breadcrumb separator=">">
-      {matched.map((m) => {
+      {matched.map((m, i) => {
         const { route } = m
         const { path, name, icon } = route as RouteDataProps
         return (
-          <Breadcrumb.Item key={path}>
+          <Breadcrumb.Item key={path || i}>
             {icon}
             {name}
           </Breadcrumb.Item>
