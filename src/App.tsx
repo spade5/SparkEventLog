@@ -1,8 +1,14 @@
 import { Outlet } from 'react-router-dom'
-import { Routes, Route, HashRouter, IndexRouteProps } from 'react-router-dom'
+import { Routes, Route, IndexRouteProps, useLocation } from 'react-router-dom'
 import routes, { RouteDataProps } from 'pages/routes'
-
+import { Suspense, useEffect } from 'react'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import './App.scss'
+
+NProgress.configure({
+  showSpinner: false
+})
 
 const mapRoutes = (routes: RouteDataProps[]) =>
   routes.map((route: RouteDataProps, i: number) => {
@@ -23,12 +29,26 @@ const mapRoutes = (routes: RouteDataProps[]) =>
     )
   })
 
+const LazyLoad = () => {
+  useEffect(() => {
+    console.log('loading begin')
+    NProgress.start()
+    return () => {
+      console.log('loading complete')
+      NProgress.done()
+    }
+  }, [])
+
+  return <></>
+}
+
 function App() {
+  const location = useLocation()
   return (
     <div className="App">
-      <HashRouter>
-        <Routes>{mapRoutes(routes)}</Routes>
-      </HashRouter>
+      <Suspense fallback={<LazyLoad />}>
+        <Routes location={location}>{mapRoutes(routes)}</Routes>
+      </Suspense>
       <Outlet />
     </div>
   )

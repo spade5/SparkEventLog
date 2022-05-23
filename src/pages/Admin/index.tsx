@@ -3,7 +3,6 @@ import { Layout } from 'antd'
 import Menu from 'components/Menu'
 import routes, { AdminPathName, RouteDataProps } from '../routes'
 import Header from 'components/Header'
-
 import './index.scss'
 
 const { Sider, Content } = Layout

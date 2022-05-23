@@ -1,10 +1,12 @@
 import { Navigate, RouteObject } from 'react-router-dom'
+import { lazy } from 'react'
 import Admin from './Admin'
 import Demo1 from './Admin/Demo1'
-import Demo2 from './Admin/Demo1/Demo2'
+// import Demo2 from './Admin/Demo1/Demo2'
 import Home from './Admin/Home'
 import { HomeOutlined, UserOutlined, OrderedListOutlined } from '@ant-design/icons'
 
+const Demo2 = lazy(() => import('./Admin/Demo1/Demo2'))
 export interface RouteDataProps extends RouteObject {
   icon?: React.ReactNode
   children?: RouteDataProps[]

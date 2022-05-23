@@ -1,9 +1,14 @@
 import { Button } from 'antd'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
 const Demo = () => {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log('send api')
+  }, [])
+
   return (
     <div>
       Demo Page

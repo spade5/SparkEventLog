@@ -7,6 +7,7 @@ import { store } from './rtk/store'
 import zhCN from 'antd/lib/locale/zh_CN'
 import moment from 'moment'
 import { ConfigProvider } from 'antd'
+import { HashRouter } from 'react-router-dom'
 
 import 'moment/locale/zh-cn'
 import 'styles/cssVar.css'
@@ -16,13 +17,13 @@ moment.locale('zh-cn')
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
-    <ConfigProvider locale={zhCN}>
-      <Provider store={store}>
+  <ConfigProvider locale={zhCN}>
+    <Provider store={store}>
+      <HashRouter>
         <App />
-      </Provider>
-    </ConfigProvider>
-  </React.StrictMode>
+      </HashRouter>
+    </Provider>
+  </ConfigProvider>
 )
 
 // If you want to start measuring performance in your app, pass a function
