@@ -28,6 +28,12 @@ const routes: RouteDataProps[] = [
         icon: <HomeOutlined />
       },
       {
+        element: <Home />,
+        name: 'qiankun',
+        path: '/admin/index',
+        icon: <HomeOutlined />
+      },
+      {
         path: 'demo1',
         icon: <UserOutlined />,
         element: <Demo1 />,
