@@ -14,7 +14,7 @@ export interface RouteDataProps extends RouteObject {
   hideInMenu?: boolean
 }
 
-export const AdminPathName = '/admin'
+export const AdminPathName = '/'
 
 const routes: RouteDataProps[] = [
   {
@@ -30,7 +30,7 @@ const routes: RouteDataProps[] = [
       {
         element: <Home />,
         name: 'qiankun',
-        path: '/admin/index',
+        path: '/security-management/admin/security/component?token=123',
         icon: <HomeOutlined />
       },
       {
@@ -40,7 +40,7 @@ const routes: RouteDataProps[] = [
         name: 'Demo1',
         children: [
           {
-            path: '/admin/demo1/demo1-1',
+            path: '/demo1/demo1-1',
             element: <Demo2 />,
             name: 'Demo1-1',
             icon: <OrderedListOutlined />
