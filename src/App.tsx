@@ -5,6 +5,7 @@ import { Suspense, useEffect } from 'react'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import './App.scss'
+import { setCookie } from 'utils/cookie'
 
 NProgress.configure({
   showSpinner: false
@@ -44,6 +45,15 @@ const LazyLoad = () => {
 
 function App() {
   const location = useLocation()
+  useEffect(() => {
+    setCookie('authToken', '1234')
+    const timer = setInterval(() => {
+      setCookie('authToken', (Math.random() * 1000).toFixed(0) + '')
+    }, 8000)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
   return (
     <div className="App">
       <Suspense fallback={<LazyLoad />}>
