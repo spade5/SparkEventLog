@@ -76,10 +76,10 @@ const microAppRoutes: any = [
     name: '安全威胁日志',
     path: '/security-management/admin/log/total/log'
   },
-  {
-    name: '',
-    path: '/security-management/admin/log/component/:id'
-  },
+  // {
+  //   name: '组件日志',
+  //   path: '/security-management/admin/log/component/:id'
+  // },
   {
     name: '系统对接',
     path: '/security-management/admin/system/dock'
@@ -95,10 +95,6 @@ const microAppRoutes: any = [
   {
     name: '授权管理',
     path: '/security-management/admin/system/auth'
-  },
-  {
-    name: '审核流程设置',
-    path: '/security-management/admin/system/review'
   },
   {
     name: '日志存储转发',
