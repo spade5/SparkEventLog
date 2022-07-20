@@ -61,14 +61,6 @@ const microAppRoutes: any = [
     path: '/security-management/admin/expense/charge'
   },
   {
-    name: '账单',
-    path: '/security-management/admin/expense/bill'
-  },
-  {
-    name: '消费记录',
-    path: '/security-management/admin/expense/record'
-  },
-  {
     name: '日志概览',
     path: '/security-management/admin/log/total'
   },
@@ -76,10 +68,10 @@ const microAppRoutes: any = [
     name: '安全威胁日志',
     path: '/security-management/admin/log/total/log'
   },
-  // {
-  //   name: '组件日志',
-  //   path: '/security-management/admin/log/component/:id'
-  // },
+  {
+    name: 'Web应用防火墙日志',
+    path: '/security-management/admin/log/component/vWaf'
+  },
   {
     name: '系统对接',
     path: '/security-management/admin/system/dock'
