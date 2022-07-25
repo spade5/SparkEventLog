@@ -7,7 +7,7 @@ import { store } from './rtk/store'
 import zhCN from 'antd/lib/locale/zh_CN'
 import moment from 'moment'
 import { ConfigProvider } from 'antd'
-import { HashRouter, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import 'moment/locale/zh-cn'
 import 'styles/cssVar.css'

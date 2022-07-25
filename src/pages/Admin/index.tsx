@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useLayoutEffect, useState } from 'react'
-import { Outlet, useLocation, matchPath } from 'react-router-dom'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Layout } from 'antd'
 import Menu from 'components/Menu'
 import routes, { AdminPathName, RouteDataProps } from '../routes'
 import Header from 'components/Header'
 import { start, registerMicroApps } from 'qiankun'
 import './index.scss'
+import microGlobalActions from 'utils/microGlobalActions'
 
 const { Sider, Content } = Layout
 
@@ -26,6 +27,23 @@ const microApps = [
 const Admin = () => {
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
+  const globalStateRef = useRef<any>({})
+  useEffect(() => {
+    // microGlobalActions.onGlobalStateChange((state: any, prev: any) => {
+    //   console.log('主应用当前state', state)
+    //   console.log('主应用上一次state', prev)
+    // })
+
+    const state: any = { isLogin: true }
+    // if (!isEqual(state, globalStateRef.current)) {
+    globalStateRef.current = state
+    microGlobalActions.setGlobalState(state)
+    // }
+
+    return () => {
+      microGlobalActions.offGlobalStateChange()
+    }
+  }, [])
   useLayoutEffect(() => {
     if (microApps.length && !(window as any).qiankunStarted) {
       console.log('start qiankun')
