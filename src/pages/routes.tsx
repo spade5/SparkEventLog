@@ -21,84 +21,128 @@ const microAppRoutes: any = [
     path: '/security-management/admin/index'
   },
   {
-    name: '我的组件',
-    path: '/security-management/admin/security/component'
+    name: '安全组件',
+    path: '/security-management/admin/security',
+    children: [
+      {
+        name: '我的组件',
+        path: '/security-management/admin/security/component'
+      },
+      {
+        name: '安全资源池',
+        path: '/security-management/admin/security/pool'
+      }
+    ]
   },
   {
-    name: '安全资源池',
-    path: '/security-management/admin/security/pool'
+    name: '资产管理',
+    path: '/security-management/admin/assets',
+    children: [
+      {
+        name: '资产列表',
+        path: '/security-management/admin/assets/list'
+      },
+      {
+        name: '服务编排',
+        path: '/security-management/admin/assets/server'
+      }
+    ]
   },
   {
-    name: '资产列表',
-    path: '/security-management/admin/assets/list'
+    name: '监控告警',
+    path: '/security-management/admin/alarm',
+    children: [
+      {
+        name: '资源监控',
+        path: '/security-management/admin/alarm/monitored'
+      },
+      {
+        name: '告警策略',
+        path: '/security-management/admin/alarm/strategy'
+      },
+      {
+        name: '告警事件',
+        path: '/security-management/admin/alarm/event'
+      }
+    ]
+  },
+
+  {
+    name: '报表管理',
+    path: '/security-management/admin/report',
+    children: [
+      {
+        name: '历史报表',
+        path: '/security-management/admin/report/history'
+      },
+      {
+        name: '报表模板',
+        path: '/security-management/admin/report/template'
+      }
+    ]
   },
   {
-    name: '服务编排',
-    path: '/security-management/admin/assets/server'
+    name: '费用管理',
+    path: '/security-management/admin/expense',
+    children: [
+      {
+        name: '计费设置',
+        path: '/security-management/admin/expense/charge'
+      }
+    ]
+  },
+
+  {
+    name: '日志管理',
+    path: '/security-management/admin/log',
+    children: [
+      {
+        name: '日志概览',
+        path: '/security-management/admin/log/total'
+      },
+      {
+        name: '安全威胁日志',
+        path: '/security-management/admin/log/total/log'
+      },
+      {
+        name: 'Web应用防火墙日志',
+        path: '/security-management/admin/log/component/vWaf'
+      }
+    ]
   },
   {
-    name: '资源监控',
-    path: '/security-management/admin/alarm/monitored'
-  },
-  {
-    name: '告警策略',
-    path: '/security-management/admin/alarm/strategy'
-  },
-  {
-    name: '告警事件',
-    path: '/security-management/admin/alarm/event'
-  },
-  {
-    name: '历史报表',
-    path: '/security-management/admin/report/history'
-  },
-  {
-    name: '报表模板',
-    path: '/security-management/admin/report/template'
-  },
-  {
-    name: '计费设置',
-    path: '/security-management/admin/expense/charge'
-  },
-  {
-    name: '日志概览',
-    path: '/security-management/admin/log/total'
-  },
-  {
-    name: '安全威胁日志',
-    path: '/security-management/admin/log/total/log'
-  },
-  {
-    name: 'Web应用防火墙日志',
-    path: '/security-management/admin/log/component/vWaf'
-  },
-  {
-    name: '系统对接',
-    path: '/security-management/admin/system/dock'
-  },
-  {
-    name: '可用区域管理',
-    path: '/security-management/admin/system/region'
-  },
-  {
-    name: '引流设置',
-    path: '/security-management/admin/system/drainage'
-  },
-  {
-    name: '授权管理',
-    path: '/security-management/admin/system/auth'
-  },
-  {
-    name: '日志存储转发',
-    path: '/security-management/admin/system/storage'
-  },
-  {
-    name: '系统日志',
-    path: '/security-management/admin/system/log'
-  },
-  {
-    name: '镜像管理',
-    path: '/security-management/admin/system/iso'
+    name: '系统管理',
+    path: '/security-management/admin/system',
+    children: [
+      {
+        name: '系统对接',
+        path: '/security-management/admin/system/dock'
+      },
+      {
+        name: '可用区域管理',
+        path: '/security-management/admin/system/region'
+      },
+      {
+        name: '引流设置',
+        path: '/security-management/admin/system/drainage'
+      },
+      {
+        name: '授权管理',
+        path: '/security-management/admin/system/auth'
+      },
+      {
+        name: '日志存储转发',
+        path: '/security-management/admin/system/storage'
+      },
+      {
+        name: '系统日志',
+        path: '/security-management/admin/system/log'
+      },
+      {
+        name: '镜像管理',
+        path: '/security-management/admin/system/iso'
+      }
+    ]
   }
 ]
 const routes: RouteDataProps[] = [
