@@ -18,129 +18,129 @@ export const AdminPathName = '/'
 const microAppRoutes: any = [
   {
     name: '概览',
-    path: '/security-management/admin/index'
+    path: '/jupiter/pages/admin/index'
   },
   {
     name: '安全组件',
-    path: '/security-management/admin/security',
+    path: '/jupiter/pages/admin/security',
     children: [
       {
         name: '我的组件',
-        path: '/security-management/admin/security/component'
+        path: '/jupiter/pages/admin/security/component'
       },
       {
         name: '安全资源池',
-        path: '/security-management/admin/security/pool'
+        path: '/jupiter/pages/admin/security/pool'
       }
     ]
   },
   {
     name: '资产管理',
-    path: '/security-management/admin/assets',
+    path: '/jupiter/pages/admin/assets',
     children: [
       {
         name: '资产列表',
-        path: '/security-management/admin/assets/list'
+        path: '/jupiter/pages/admin/assets/list'
       },
       {
         name: '服务编排',
-        path: '/security-management/admin/assets/server'
+        path: '/jupiter/pages/admin/assets/server'
       }
     ]
   },
   {
     name: '监控告警',
-    path: '/security-management/admin/alarm',
+    path: '/jupiter/pages/admin/alarm',
     children: [
       {
         name: '资源监控',
-        path: '/security-management/admin/alarm/monitored'
+        path: '/jupiter/pages/admin/alarm/monitored'
       },
       {
         name: '告警策略',
-        path: '/security-management/admin/alarm/strategy'
+        path: '/jupiter/pages/admin/alarm/strategy'
       },
       {
         name: '告警事件',
-        path: '/security-management/admin/alarm/event'
+        path: '/jupiter/pages/admin/alarm/event'
       }
     ]
   },
 
   {
     name: '报表管理',
-    path: '/security-management/admin/report',
+    path: '/jupiter/pages/admin/report',
     children: [
       {
         name: '历史报表',
-        path: '/security-management/admin/report/history'
+        path: '/jupiter/pages/admin/report/history'
       },
       {
         name: '报表模板',
-        path: '/security-management/admin/report/template'
+        path: '/jupiter/pages/admin/report/template'
       }
     ]
   },
   {
     name: '费用管理',
-    path: '/security-management/admin/expense',
+    path: '/jupiter/pages/admin/expense',
     children: [
       {
         name: '计费设置',
-        path: '/security-management/admin/expense/charge'
+        path: '/jupiter/pages/admin/expense/charge'
       }
     ]
   },
 
   {
     name: '日志管理',
-    path: '/security-management/admin/log',
+    path: '/jupiter/pages/admin/log',
     children: [
       {
         name: '日志概览',
-        path: '/security-management/admin/log/total'
+        path: '/jupiter/pages/admin/log/total'
       },
       {
         name: '安全威胁日志',
-        path: '/security-management/admin/log/total/log'
+        path: '/jupiter/pages/admin/log/total/log'
       },
       {
         name: 'Web应用防火墙日志',
-        path: '/security-management/admin/log/component/vWaf'
+        path: '/jupiter/pages/admin/log/component/vWaf'
       }
     ]
   },
   {
     name: '系统管理',
-    path: '/security-management/admin/system',
+    path: '/jupiter/pages/admin/system',
     children: [
       {
         name: '系统对接',
-        path: '/security-management/admin/system/dock'
+        path: '/jupiter/pages/admin/system/dock'
       },
       {
         name: '可用区域管理',
-        path: '/security-management/admin/system/region'
+        path: '/jupiter/pages/admin/system/region'
       },
       {
         name: '引流设置',
-        path: '/security-management/admin/system/drainage'
+        path: '/jupiter/pages/admin/system/drainage'
       },
       {
         name: '授权管理',
-        path: '/security-management/admin/system/auth'
+        path: '/jupiter/pages/admin/system/auth'
       },
       {
         name: '日志存储转发',
-        path: '/security-management/admin/system/storage'
+        path: '/jupiter/pages/admin/system/storage'
       },
       {
         name: '系统日志',
-        path: '/security-management/admin/system/log'
+        path: '/jupiter/pages/admin/system/log'
       },
       {
         name: '镜像管理',
-        path: '/security-management/admin/system/iso'
+        path: '/jupiter/pages/admin/system/iso'
       }
     ]
   }
@@ -159,7 +159,7 @@ const routes: RouteDataProps[] = [
       // {
       //   element: <Home />,
       //   name: 'qiankun',
-      //   path: '/security-management/admin/security/component?token=123',
+      //   path: '/jupiter/pages/admin/security/component?token=123',
       //   icon: <HomeOutlined />
       // },
       ...microAppRoutes,
