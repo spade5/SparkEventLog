@@ -57,7 +57,7 @@ function renderItem(params, api) {
   );
 }
 
-export const getGanttOption = (data) => {
+export const getGanttOption = (data, categories) => {
     return {
   tooltip: {
     formatter: function (params) {
