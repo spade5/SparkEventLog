@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Gantt, { GanttDataProps } from 'components/Charts/Gantt'
 import ReactEcharts from 'echarts-for-react'
-const categories = ['Tasks', 'Stages', 'Jobs']
 const types = [
   { name: 'JS Heap', color: '#7b9ce1' },
   { name: 'Documents', color: '#bd6d6c' },
@@ -11,10 +10,27 @@ const types = [
   { name: 'GPU', color: '#72b362' }
 ]
 
-const StreamingLog = (props: { dataUrl: string }) => {
+const getCaterories = (cores: number) => {
+  const tasks =
+    cores === 1
+      ? ['Tasks']
+      : Array(cores)
+          .fill('Tasks-E')
+          .map((str, i) => `${str}${i}`)
+  return [...tasks, 'Stages', 'Jobs']
+}
+
+const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
   const [data, setData] = useState<GanttDataProps[]>()
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
+
+  const cores = useMemo(() => props.cores || 1, [props.cores])
+  const categories = useMemo(() => {
+    const cats = getCaterories(cores)
+    console.log(cats)
+    return cats
+  }, [cores])
 
   const getData = useCallback(async () => {
     // const url = '/data/1734.json'
@@ -54,8 +70,10 @@ const StreamingLog = (props: { dataUrl: string }) => {
         case 'SparkListenerTaskEnd': {
           Tasks[json['Task Info']['Task ID']] = {
             start: json['Task Info']['Launch Time'],
-            end: json['Task Info']['Finish Time']
+            end: json['Task Info']['Finish Time'],
+            executorId: json['Task Info']['Executor ID']
           }
+
           break
         }
       }
@@ -63,14 +81,14 @@ const StreamingLog = (props: { dataUrl: string }) => {
 
     const generateData = (obj: any, name: string, index: number) => {
       Object.keys(obj).forEach((key: any) => {
-        const { start = 0, end = 0 } = obj[key]
+        const { start = 0, end = 0, executorId } = obj[key]
         const typeItem = types[Math.round(Math.random() * (types.length - 1))]
         if (obj[key].batch) {
           delayData[key] = obj[key].end - obj[key].batch
         }
         data.push({
           name: `${name}${key}`,
-          value: [index, start, end, end - start],
+          value: [+executorId || index, start, end, end - start],
           itemStyle: {
             normal: {
               color: typeItem.color
@@ -83,14 +101,14 @@ const StreamingLog = (props: { dataUrl: string }) => {
     const data: GanttDataProps[] = []
     const delayData: number[] = Array(Object.keys(Jobs).length).fill(0)
 
-    generateData(Jobs, 'Job', 2)
-    generateData(Stages, 'Stage', 1)
+    generateData(Jobs, 'Job', cores + 1)
+    generateData(Stages, 'Stage', cores)
     generateData(Tasks, 'Task', 0)
 
     setStartTime(startTime)
     setData(data)
     setDelayData(delayData)
-    console.log(delayData)
+    console.log(data)
   }, [props.dataUrl])
 
   useEffect(() => {
