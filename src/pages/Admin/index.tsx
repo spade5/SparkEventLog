@@ -12,14 +12,14 @@ export const getAdminRoute: () => RouteDataProps | undefined = () => routes.find
 const Admin = () => {
   return (
     <Layout className="admin-layout">
-      <Sider theme="light" className="admin-sidebar">
+      {/* <Sider theme="light" className="admin-sidebar">
         <Layout.Header className="admin-sidebar-logo">Logo</Layout.Header>
         <Content className="admin-menu-container">
           <Menu />
         </Content>
-      </Sider>
+      </Sider> */}
       <Layout>
-        <Header />
+        {/* <Header /> */}
         <Content className="admin-content">
           <Outlet />
         </Content>

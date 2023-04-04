@@ -1,7 +1,7 @@
-import React from 'react'
+import StreamingLog from 'components/StreamingLog'
 
 const Home = () => {
-  return <div>Home Page</div>
+  return <StreamingLog dataUrl="/data/1734.json" />
 }
 
 export default Home

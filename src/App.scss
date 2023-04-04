@@ -4,9 +4,9 @@
 
 .App {
   color: $primary-color;
-  width: 100vw;
-  height: 100vh;
-  @include ellipse;
+  // width: 100vw;
+  // height: 100vh;
+  // @include ellipse;
 }
 
 #nprogress .bar {

@@ -14,7 +14,7 @@ export interface RouteDataProps extends RouteObject {
   hideInMenu?: boolean
 }
 
-export const AdminPathName = '/admin'
+export const AdminPathName = '/spark'
 
 const routes: RouteDataProps[] = [
   {
@@ -27,32 +27,32 @@ const routes: RouteDataProps[] = [
         name: '首页',
         icon: <HomeOutlined />
       },
-      {
-        path: 'demo1',
-        icon: <UserOutlined />,
-        element: <Demo1 />,
-        name: 'Demo1',
-        children: [
-          {
-            path: '/admin/demo1/demo1-1',
-            element: <Demo2 />,
-            name: 'Demo1-1',
-            icon: <OrderedListOutlined />
-          }
-        ]
-      },
-      {
-        path: 'demo2',
-        element: <Demo1 />,
-        name: 'Demo2',
-        children: [
-          {
-            path: 'demo2-1',
-            element: <Demo2 />,
-            name: 'Demo2-1'
-          }
-        ]
-      },
+      // {
+      //   path: 'demo1',
+      //   icon: <UserOutlined />,
+      //   element: <Demo1 />,
+      //   name: 'Demo1',
+      //   children: [
+      //     {
+      //       path: '/admin/demo1/demo1-1',
+      //       element: <Demo2 />,
+      //       name: 'Demo1-1',
+      //       icon: <OrderedListOutlined />
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: 'demo2',
+      //   element: <Demo1 />,
+      //   name: 'Demo2',
+      //   children: [
+      //     {
+      //       path: 'demo2-1',
+      //       element: <Demo2 />,
+      //       name: 'Demo2-1'
+      //     }
+      //   ]
+      // },
       {
         path: '*',
         name: '404 Not Found',
