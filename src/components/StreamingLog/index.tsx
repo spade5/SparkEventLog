@@ -1,14 +1,26 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Gantt, { GanttDataProps } from 'components/Charts/Gantt'
 import ReactEcharts from 'echarts-for-react'
-const types = [
-  { name: 'JS Heap', color: '#7b9ce1' },
-  { name: 'Documents', color: '#bd6d6c' },
-  { name: 'Nodes', color: '#75d874' },
-  { name: 'Listeners', color: '#e0bc78' },
-  { name: 'GPU Memory', color: '#dc77dc' },
-  { name: 'GPU', color: '#72b362' }
-]
+
+const Styles: { [key: string]: { [key: string]: any } } = {
+  Batch: {
+    color: '#faea91',
+    borderColor: '#ccae04'
+    // borderType: 'solid'
+  },
+  Job: {
+    color: '#f2960c',
+    borderColor: '#ba6214'
+  },
+  Stage: {
+    color: '#87dade',
+    borderColor: '#078082'
+  },
+  Task: {
+    color: '#0ca9f2',
+    borderColor: '#060b63'
+  }
+}
 
 const getCaterories = (cores: number) => {
   const tasks =
@@ -17,13 +29,14 @@ const getCaterories = (cores: number) => {
       : Array(cores)
           .fill('Tasks-E')
           .map((str, i) => `${str}${i}`)
-  return [...tasks, 'Stages', 'Jobs']
+  return [...tasks, 'Stages', 'Jobs', 'Batches']
 }
 
 const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
   const [data, setData] = useState<GanttDataProps[]>()
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
+  const [processingData, setProcessingData] = useState<number[]>()
 
   const cores = useMemo(() => props.cores || 1, [props.cores])
   const categories = useMemo(() => {
@@ -41,6 +54,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
     const Stages: { [key: number]: any } = {}
     const Tasks: { [key: number]: any } = {}
     let startTime = 0
+    const BATCH_INTERVAL = 1000
 
     splits.forEach((str) => {
       const json = JSON.parse(str)
@@ -52,7 +66,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
         case 'SparkListenerJobStart': {
           Jobs[json['Job ID']] = {
             start: json['Submission Time'],
-            batch: json['Properties']['spark.streaming.internal.batchTime']
+            batch: +json['Properties']['spark.streaming.internal.batchTime']
           }
           break
         }
@@ -82,17 +96,23 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
     const generateData = (obj: any, name: string, index: number) => {
       Object.keys(obj).forEach((key: any) => {
         const { start = 0, end = 0, executorId } = obj[key]
-        const typeItem = types[Math.round(Math.random() * (types.length - 1))]
+        const idx: number = +executorId || index
         if (obj[key].batch) {
-          delayData[key] = obj[key].end - obj[key].batch
+          delayData[key] = obj[key].end - obj[key].batch + BATCH_INTERVAL
+          processingData[key] = obj[key].end - obj[key].start
+          data.push({
+            name: `Batch${key}`,
+            value: [idx + 1, obj[key].batch - BATCH_INTERVAL, obj[key].batch, BATCH_INTERVAL],
+            itemStyle: {
+              normal: Styles.Batch
+            }
+          })
         }
         data.push({
           name: `${name}${key}`,
-          value: [+executorId || index, start, end, end - start],
+          value: [idx, start, end, end - start],
           itemStyle: {
-            normal: {
-              color: typeItem.color
-            }
+            normal: Styles[name]
           }
         })
       })
@@ -100,6 +120,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
 
     const data: GanttDataProps[] = []
     const delayData: number[] = Array(Object.keys(Jobs).length).fill(0)
+    const processingData: number[] = Array(Object.keys(Jobs).length).fill(0)
 
     generateData(Jobs, 'Job', cores + 1)
     generateData(Stages, 'Stage', cores)
@@ -108,7 +129,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
     setStartTime(startTime)
     setData(data)
     setDelayData(delayData)
-    console.log(data)
+    setProcessingData(processingData)
   }, [props.dataUrl])
 
   useEffect(() => {
@@ -118,12 +139,40 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
   return (
     <div>
       {data && <Gantt data={data} categories={categories} min={startTime} />}
+      {processingData && (
+        <ReactEcharts
+          option={{
+            title: {
+              text: 'Spark Streaming Processing Time',
+              left: 'center'
+            },
+            tooltip: {
+              show: true
+            },
+            xAxis: {
+              type: 'category'
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                data: processingData,
+                type: 'line'
+              }
+            ]
+          }}
+        />
+      )}
       {delayData && (
         <ReactEcharts
           option={{
             title: {
               text: 'Spark Streaming Total Delay',
               left: 'center'
+            },
+            tooltip: {
+              show: true
             },
             xAxis: {
               type: 'category'

@@ -3,8 +3,8 @@ import StreamingLog from 'components/StreamingLog'
 const Home = () => {
   return (
     <>
-      <StreamingLog dataUrl="/data/1734.json" />
-      <StreamingLog dataUrl="/data/cluster1728.json" cores={2} />
+      <StreamingLog dataUrl="/data/single3w.json" />
+      <StreamingLog dataUrl="/data/cluster3w.json" cores={3} />
     </>
   )
 }

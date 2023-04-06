@@ -35,7 +35,7 @@ export interface GanttDataProps {
   value: number[]
   itemStyle: {
     normal: {
-      color: string
+      [key: string]: string
     }
   }
 }
@@ -84,7 +84,9 @@ const getGanttOption = (data: GanttDataProps[], categories: string[], min = 0) =
         type: 'custom',
         renderItem: renderItem,
         itemStyle: {
-          opacity: 0.8
+          opacity: 0.8,
+          borderWidth: 1,
+          borderColor: '#666'
         },
         encode: {
           x: [1, 2],
