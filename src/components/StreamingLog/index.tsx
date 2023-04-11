@@ -85,7 +85,8 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
           Tasks[json['Task Info']['Task ID']] = {
             start: json['Task Info']['Launch Time'],
             end: json['Task Info']['Finish Time'],
-            executorId: json['Task Info']['Executor ID']
+            executorId: json['Task Info']['Executor ID'],
+            stage: json['Stage ID']
           }
 
           break
@@ -111,6 +112,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
         data.push({
           name: `${name}${key}`,
           value: [idx, start, end, end - start],
+          desc: obj[key].stage || obj[key].stage === 0 ? `Stage:${obj[key].stage}` : '',
           itemStyle: {
             normal: Styles[name]
           }

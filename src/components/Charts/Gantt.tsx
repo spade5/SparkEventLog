@@ -33,6 +33,7 @@ function renderItem(params: any, api: any) {
 export interface GanttDataProps {
   name: string
   value: number[]
+  desc?: string
   itemStyle: {
     normal: {
       [key: string]: string
@@ -44,7 +45,10 @@ const getGanttOption = (data: GanttDataProps[], categories: string[], min = 0) =
   return {
     tooltip: {
       formatter: function (params: any) {
-        return `${params.marker}${params.name}: ${params.value[3]} ms<br />${params.value[1] - min}-${params.value[2] - min}ms`
+        return (
+          `${params.marker}${params.name}: ${params.value[3]} ms<br />${params.value[1] - min}-${params.value[2] - min}ms` +
+          (params.data?.desc ? `<br/>${params.data?.desc}` : '')
+        )
       }
     },
     title: {

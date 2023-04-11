@@ -5,6 +5,7 @@ const Home = () => {
     <>
       <StreamingLog dataUrl="/data/single3w.json" />
       <StreamingLog dataUrl="/data/cluster04101712.json" cores={3} />
+      <StreamingLog dataUrl="/data/cluster04111559-h.json" cores={3} />
     </>
   )
 }
