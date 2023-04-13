@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Gantt, { GanttDataProps } from 'components/Charts/Gantt'
 import ReactEcharts from 'echarts-for-react'
+import { Typography } from 'antd'
+
+const { Title, Paragraph } = Typography
 
 const Styles: { [key: string]: { [key: string]: any } } = {
   Batch: {
@@ -32,11 +35,12 @@ const getCaterories = (cores: number) => {
   return [...tasks, 'Stages', 'Jobs', 'Batches']
 }
 
-const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
+const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; desc?: string }) => {
   const [data, setData] = useState<GanttDataProps[]>()
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
   const [processingData, setProcessingData] = useState<number[]>()
+  const { title, desc } = props
 
   const cores = useMemo(() => props.cores || 1, [props.cores])
   const categories = useMemo(() => {
@@ -139,7 +143,9 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
   }, [getData])
 
   return (
-    <div>
+    <Typography>
+      {title && <Title>{title}</Title>}
+      {desc && <Paragraph>{desc}</Paragraph>}
       {data && <Gantt data={data} categories={categories} min={startTime} />}
       {processingData && (
         <ReactEcharts
@@ -191,7 +197,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number }) => {
           }}
         />
       )}
-    </div>
+    </Typography>
   )
 }
 
