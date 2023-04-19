@@ -52,7 +52,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
   const getData = useCallback(async () => {
     // const url = '/data/1734.json'
     const text = await fetch(props.dataUrl).then((response: Response) => response.text())
-    const splits = text.split(/(?<=})\n(?={)/g)
+    const splits = text.split(/(?<=})\r?\n(?={)/g)
 
     const Jobs: { [key: number]: any } = {}
     const Stages: { [key: number]: any } = {}
