@@ -12,9 +12,15 @@ const Home = () => {
         cores={3}
       />
       <StreamingLog
-        title="实验四：异构并行,细粒度分区"
+        title="实验四：异构并行，细粒度分区"
         desc="2 executor (1 core, 2.4GHz), 1 executor (1 core, 1.2GHz), 90000 records/s, 30 partitions"
         dataUrl="/data/cluster-p30.json"
+        cores={3}
+      />
+      <StreamingLog
+        title="实验五：异构并行，细粒度分区，双核"
+        desc="2 executor (1 core, 2.4GHz), 1 executor (1 core, 1.2GHz), 90000 records/s, 30 partitions"
+        dataUrl="/data/cluster-p30-core2.json"
         cores={3}
       />
     </>

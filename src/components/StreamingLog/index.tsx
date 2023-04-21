@@ -40,6 +40,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
   const [processingData, setProcessingData] = useState<number[]>()
+  const [deserializeData, setDeserializeData] = useState<number[]>()
   const { title, desc } = props
 
   const cores = useMemo(() => props.cores || 1, [props.cores])
@@ -59,6 +60,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     const Tasks: { [key: number]: any } = {}
     let startTime = 0
     const BATCH_INTERVAL = 1000
+    const StageToJob: any = {}
 
     splits.forEach((str) => {
       const json = JSON.parse(str)
@@ -72,6 +74,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
             start: json['Submission Time'],
             batch: +json['Properties']['spark.streaming.internal.batchTime']
           }
+          json['Stage IDs'].forEach((id: number) => (StageToJob[id] = json['Job ID']))
           break
         }
         case 'SparkListenerJobEnd': {
@@ -90,7 +93,8 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
             start: json['Task Info']['Launch Time'],
             end: json['Task Info']['Finish Time'],
             executorId: json['Task Info']['Executor ID'],
-            stage: json['Stage ID']
+            stage: json['Stage ID'],
+            ds_time: json['Task Metrics']['Executor Deserialize Time']
           }
 
           break
@@ -102,6 +106,11 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
       Object.keys(obj).forEach((key: any) => {
         const { start = 0, end = 0, executorId } = obj[key]
         const idx: number = +executorId || index
+
+        if (obj[key].ds_time) {
+          deserializeData[StageToJob[obj[key].stage]] += obj[key].ds_time
+        }
+
         if (obj[key].batch) {
           delayData[key] = obj[key].end - obj[key].batch + BATCH_INTERVAL
           processingData[key] = obj[key].end - obj[key].start
@@ -127,6 +136,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     const data: GanttDataProps[] = []
     const delayData: number[] = Array(Object.keys(Jobs).length).fill(0)
     const processingData: number[] = Array(Object.keys(Jobs).length).fill(0)
+    const deserializeData: number[] = Array(Object.keys(Jobs).length).fill(0)
 
     generateData(Jobs, 'Job', cores + 1)
     generateData(Stages, 'Stage', cores)
@@ -136,6 +146,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     setData(data)
     setDelayData(delayData)
     setProcessingData(processingData)
+    setDeserializeData(deserializeData)
   }, [props.dataUrl])
 
   useEffect(() => {
@@ -166,6 +177,10 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
             series: [
               {
                 data: processingData,
+                type: 'line'
+              },
+              {
+                data: deserializeData,
                 type: 'line'
               }
             ]
