@@ -169,20 +169,22 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
               show: true
             },
             xAxis: {
-              type: 'category'
+              type: 'category',
+              name: 'batch'
             },
             yAxis: {
-              type: 'value'
+              type: 'value',
+              name: 'ms'
             },
             series: [
               {
                 data: processingData,
                 type: 'line'
-              },
-              {
-                data: deserializeData,
-                type: 'line'
               }
+              // {
+              //   data: deserializeData,
+              //   type: 'line'
+              // }
             ]
           }}
         />
@@ -198,10 +200,12 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
               show: true
             },
             xAxis: {
-              type: 'category'
+              type: 'category',
+              name: 'batch'
             },
             yAxis: {
-              type: 'value'
+              type: 'value',
+              name: 'ms'
             },
             series: [
               {

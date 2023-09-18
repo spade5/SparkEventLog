@@ -16,6 +16,12 @@ const Home = () => {
         dataUrl="/data/cluster-p3-d88.json"
         cores={3}
       />
+      <StreamingLog
+        title="实验四：同构并行，超负荷"
+        desc="3 executor (1 core, 2.0GHz), 并行度 2， 200000 records/s"
+        dataUrl="/data/cluster-p2-2GHz.json"
+        cores={3}
+      />
       {/* <StreamingLog
         title="实验四：异构并行，细粒度分区"
         desc="2 executor (1 core, 2.4GHz), 1 executor (1 core, 1.2GHz), 90000 records/s, 30 partitions"
