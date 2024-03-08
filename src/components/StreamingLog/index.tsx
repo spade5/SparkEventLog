@@ -39,6 +39,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
   const [data, setData] = useState<GanttDataProps[]>()
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
+  const [TaskData, setTaskData] = useState<{ [key: string]: number[] }>({})
   const [processingData, setProcessingData] = useState<number[]>()
   const [deserializeData, setDeserializeData] = useState<number[]>()
   const { title, desc } = props
@@ -46,7 +47,6 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
   const cores = useMemo(() => props.cores || 1, [props.cores])
   const categories = useMemo(() => {
     const cats = getCaterories(cores)
-    console.log(cats)
     return cats
   }, [cores])
 
@@ -61,6 +61,8 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     let startTime = 0
     const BATCH_INTERVAL = 1000
     const StageToJob: any = {}
+
+    const TaskBarData: { [key: string]: number[] } = {}
 
     splits.forEach((str) => {
       const json = JSON.parse(str)
@@ -89,12 +91,22 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
           break
         }
         case 'SparkListenerTaskEnd': {
-          Tasks[json['Task Info']['Task ID']] = {
+          const item = {
             start: json['Task Info']['Launch Time'],
             end: json['Task Info']['Finish Time'],
             executorId: json['Task Info']['Executor ID'],
             stage: json['Stage ID'],
             ds_time: json['Task Metrics']['Executor Deserialize Time']
+          }
+          Tasks[json['Task Info']['Task ID']] = item
+
+          const eID = item.executorId
+          if (item.stage % 2 === 0) {
+            if (!(eID in TaskBarData)) {
+              TaskBarData[eID] = []
+            }
+
+            TaskBarData[eID].push(item.end - item.start)
           }
 
           break
@@ -141,6 +153,8 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     generateData(Jobs, 'Job', cores + 1)
     generateData(Stages, 'Stage', cores)
     generateData(Tasks, 'Task', 0)
+
+    setTaskData(TaskBarData)
 
     setStartTime(startTime)
     setData(data)
@@ -213,6 +227,37 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
                 type: 'line'
               }
             ]
+          }}
+        />
+      )}
+
+      {TaskData && (
+        <ReactEcharts
+          option={{
+            legend: {
+              show: true,
+              top: 30
+            },
+            title: {
+              text: 'Spark Streaming Task Processing Time',
+              left: 'center'
+            },
+            tooltip: {
+              show: true
+            },
+            xAxis: {
+              type: 'category',
+              name: 'batch'
+            },
+            yAxis: {
+              type: 'value',
+              name: 'ms'
+            },
+            series: Object.keys(TaskData).map((key) => ({
+              data: TaskData[key].slice(2, 35),
+              name: `Executor-${key}`,
+              type: 'line'
+            }))
           }}
         />
       )}
