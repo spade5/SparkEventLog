@@ -78,7 +78,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "pub": "node scripts/publish.js"
   },
   "eslintConfig": {
     "extends": [
@@ -158,6 +159,7 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint-plugin-react": "^7.29.4",
+    "gh-pages": "^6.1.1",
     "prettier": "^2.6.2"
   }
 }

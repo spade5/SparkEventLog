@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.90697002.css",
-    "main.js": "/static/js/main.64ea38be.js",
-    "static/js/787.fa3c4679.chunk.js": "/static/js/787.fa3c4679.chunk.js",
-    "index.html": "/index.html",
-    "main.90697002.css.map": "/static/css/main.90697002.css.map",
-    "main.64ea38be.js.map": "/static/js/main.64ea38be.js.map",
-    "787.fa3c4679.chunk.js.map": "/static/js/787.fa3c4679.chunk.js.map"
+    "main.css": "/SparkEventLog/static/css/main.90697002.css",
+    "main.js": "/SparkEventLog/static/js/main.26d43f5f.js",
+    "static/js/787.fa3c4679.chunk.js": "/SparkEventLog/static/js/787.fa3c4679.chunk.js",
+    "index.html": "/SparkEventLog/index.html",
+    "main.90697002.css.map": "/SparkEventLog/static/css/main.90697002.css.map",
+    "main.26d43f5f.js.map": "/SparkEventLog/static/js/main.26d43f5f.js.map",
+    "787.fa3c4679.chunk.js.map": "/SparkEventLog/static/js/787.fa3c4679.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90697002.css",
-    "static/js/main.64ea38be.js"
+    "static/js/main.26d43f5f.js"
   ]
 }
