@@ -35,7 +35,7 @@ const getCaterories = (cores: number) => {
   return [...tasks, 'Stages', 'Jobs', 'Batches']
 }
 
-const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; desc?: string }) => {
+const StreamingLog = (props: { dataUrl?: string; data?: string; cores?: number; title?: string; desc?: string }) => {
   const [data, setData] = useState<GanttDataProps[]>()
   const [startTime, setStartTime] = useState<number>(0)
   const [delayData, setDelayData] = useState<number[]>()
@@ -44,7 +44,8 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
   const [deserializeData, setDeserializeData] = useState<number[]>()
   const { title, desc } = props
 
-  const cores = useMemo(() => props.cores || 1, [props.cores])
+  const [cores, setCores] = useState(1)
+
   const categories = useMemo(() => {
     const cats = getCaterories(cores)
     return cats
@@ -52,7 +53,12 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
 
   const getData = useCallback(async () => {
     // const url = '/data/1734.json'
-    const text = await fetch(props.dataUrl).then((response: Response) => response.text())
+    let text = ''
+    if (props.data) {
+      text = props.data
+    } else if (props.dataUrl) {
+      text = await fetch(props.dataUrl).then((response: Response) => response.text())
+    }
     const splits = text.split(/(?<=})\r?\n(?={)/g)
 
     const Jobs: { [key: number]: any } = {}
@@ -61,6 +67,7 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     let startTime = 0
     const BATCH_INTERVAL = 1000
     const StageToJob: any = {}
+    const executorIDs: any = {}
 
     const TaskBarData: { [key: string]: number[] } = {}
 
@@ -109,10 +116,15 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
             TaskBarData[eID].push(item.end - item.start)
           }
 
+          executorIDs[eID] = true
+
           break
         }
       }
     })
+
+    const cores = Object.keys(executorIDs).length
+    setCores(cores)
 
     const generateData = (obj: any, name: string, index: number) => {
       Object.keys(obj).forEach((key: any) => {
@@ -159,6 +171,9 @@ const StreamingLog = (props: { dataUrl: string; cores?: number; title?: string; 
     setStartTime(startTime)
     setData(data)
     setDelayData(delayData)
+
+    console.log(processingData)
+
     setProcessingData(processingData)
     setDeserializeData(deserializeData)
   }, [props.dataUrl])

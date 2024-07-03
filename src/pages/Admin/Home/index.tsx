@@ -1,39 +1,45 @@
 import StreamingLog from 'components/StreamingLog'
+import { useState } from 'react'
+import type { UploadProps } from 'antd'
+import Dragger from 'antd/lib/upload/Dragger'
+import { InboxOutlined } from '@ant-design/icons'
 
 const Home = () => {
+  // 上传文件并获取文本内容
+  // 获取文件内容
+  const [datas, setDatas] = useState<{ title: string; data: string }[]>([])
+
+  const props: UploadProps = {
+    onRemove: (file) => {
+      console.log(file)
+    },
+    beforeUpload: (file) => {
+      // 获取文件内容
+      const reader = new FileReader()
+      reader.readAsText(file, 'utf-8')
+      reader.onload = (e) => {
+        console.log(e)
+        setDatas([...datas, { data: e.target?.result as string, title: file.name }])
+      }
+
+      return false
+    }
+  }
+
   return (
     <>
-      <StreamingLog title="实验一：拥塞模拟" desc="1 executor (1 core), 90000 records/s" dataUrl="/data/single3w.json" />
-      <StreamingLog
-        title="实验二：同构并行"
-        desc="3 executor (1 core, 2.0GHz), 90000 records/s"
-        dataUrl="/data/cluster-p3-2GHz.json"
-        cores={3}
-      />
-      <StreamingLog
-        title="实验三：异构并行"
-        desc="3 executor (1 core, 2.4GHz, 2.0GHz, 1.6GHz), 90000 records/s"
-        dataUrl="/data/cluster-p3-d88.json"
-        cores={3}
-      />
-      <StreamingLog
-        title="实验四：同构并行，超负荷"
-        desc="3 executor (1 core, 2.0GHz), 并行度 2， 200000 records/s"
-        dataUrl="/data/cluster-p2-2GHz.json"
-        cores={3}
-      />
-      {/* <StreamingLog
-        title="实验四：异构并行，细粒度分区"
-        desc="2 executor (1 core, 2.4GHz), 1 executor (1 core, 1.2GHz), 90000 records/s, 30 partitions"
-        dataUrl="/data/cluster-p30-042703.json"
-        cores={3}
-      />
-      <StreamingLog
-        title="实验五：异构并行，细粒度分区，双核"
-        desc="2 executor (1 core, 2.4GHz), 1 executor (1 core, 1.2GHz), 90000 records/s, 30 partitions"
-        dataUrl="/data/cluster-p30-core2.json"
-        cores={3}
-      /> */}
+      <Dragger {...props}>
+        <p className="ant-upload-drag-icon">
+          <InboxOutlined />
+        </p>
+        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        <p className="ant-upload-hint">
+          Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
+        </p>
+      </Dragger>
+      {datas.map((data, index) => {
+        return <StreamingLog key={index} title={data.title} data={data.data} />
+      })}
     </>
   )
 }

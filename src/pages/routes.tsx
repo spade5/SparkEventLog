@@ -1,6 +1,7 @@
 import { Navigate, RouteObject } from 'react-router-dom'
 import { lazy } from 'react'
 import Admin from './Admin'
+import My from './Admin/My'
 // import Demo2 from './Admin/Demo1/Demo2'
 import Home from './Admin/Home'
 import { HomeOutlined, UserOutlined, OrderedListOutlined } from '@ant-design/icons'
@@ -21,6 +22,12 @@ const routes: RouteDataProps[] = [
     children: [
       {
         element: <Home />, //二级路由，作为菜单项
+        index: true,
+        name: '首页',
+        icon: <HomeOutlined />
+      },
+      {
+        element: <My />, //二级路由，作为菜单项
         index: true,
         name: '首页',
         icon: <HomeOutlined />
