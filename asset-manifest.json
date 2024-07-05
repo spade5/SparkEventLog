@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/SparkEventLog/static/css/main.90697002.css",
-    "main.js": "/SparkEventLog/static/js/main.26d43f5f.js",
+    "main.js": "/SparkEventLog/static/js/main.cfb39e92.js",
     "static/js/787.fa3c4679.chunk.js": "/SparkEventLog/static/js/787.fa3c4679.chunk.js",
     "index.html": "/SparkEventLog/index.html",
     "main.90697002.css.map": "/SparkEventLog/static/css/main.90697002.css.map",
-    "main.26d43f5f.js.map": "/SparkEventLog/static/js/main.26d43f5f.js.map",
+    "main.cfb39e92.js.map": "/SparkEventLog/static/js/main.cfb39e92.js.map",
     "787.fa3c4679.chunk.js.map": "/SparkEventLog/static/js/787.fa3c4679.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90697002.css",
-    "static/js/main.26d43f5f.js"
+    "static/js/main.cfb39e92.js"
   ]
 }
